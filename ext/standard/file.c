@@ -1906,7 +1906,7 @@ PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, cha
 		zend_tmp_string_release(tmp_field_str);
 	} ZEND_HASH_FOREACH_END();
 
-	smart_str_appendc(&csvline, '\n');
+	smart_str_appends(&csvline, '\r\n');
 	smart_str_0(&csvline);
 
 	ret = php_stream_write(stream, ZSTR_VAL(csvline.s), ZSTR_LEN(csvline.s));
