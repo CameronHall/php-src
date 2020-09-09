@@ -2371,7 +2371,7 @@ PHP_METHOD(SplFileObject, fgetcsv)
 PHP_METHOD(SplFileObject, fputcsv)
 {
 	spl_filesystem_object *intern = Z_SPLFILESYSTEM_P(ZEND_THIS);
-	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure;
+	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure, endofline = NULL;
 	int escape = intern->u.file.escape;
 	char *delim = NULL, *enclo = NULL, *esc = NULL, *eol = NULL;
 	size_t d_len = 0, e_len = 0, esc_len = 0, eol_len = 0;
@@ -2384,6 +2384,10 @@ PHP_METHOD(SplFileObject, fputcsv)
 		switch(ZEND_NUM_ARGS())
 		{
 		case 5:
+			if (eol_len > 1) {
+				endofline = eol;
+			}
+			/* no break */
 		case 4:
 			switch (esc_len) {
 				case 0:
@@ -2415,7 +2419,7 @@ PHP_METHOD(SplFileObject, fputcsv)
 		case 0:
 			break;
 		}
-		ret = php_fputcsv(intern->u.file.stream, fields, delimiter, enclosure, escape, eol);
+		ret = php_fputcsv(intern->u.file.stream, fields, delimiter, enclosure, escape, endofline);
 		if (ret < 0) {
 			RETURN_FALSE;
 		}
