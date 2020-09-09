@@ -1849,8 +1849,8 @@ PHP_FUNCTION(fputcsv)
 	}
 
 	if (eol_str != NULL) {
-		if (eol_str < 1) {
-			eol_str = '\r\n';
+		if (eol_str_len < 1) {
+			eol_str = PHP_CSV_EOL;
 		} else {
 			eol_str = escape_str;
 		}
