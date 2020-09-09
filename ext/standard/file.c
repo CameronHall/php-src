@@ -1799,7 +1799,7 @@ PHP_FUNCTION(fputcsv)
 	php_stream *stream;
 	zval *fp = NULL, *fields = NULL;
 	ssize_t ret;
-	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL, eol_str = NULL;
+	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL, *eol_str = NULL;
 	size_t delimiter_str_len = 0, enclosure_str_len = 0, escape_str_len = 0, eol_str_len = 0;
 
 	ZEND_PARSE_PARAMETERS_START(2, 6)
