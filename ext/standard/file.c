@@ -1840,7 +1840,7 @@ PHP_FUNCTION(fputcsv)
 			php_error_docref(NULL, E_NOTICE, "escape must be empty or a single character");
 		}
 		if (escape_str_len < 1) {
-			escape_char = (unsigned char) PHP_CSV_NO_ESCAPE;
+			escape_char = PHP_CSV_NO_ESCAPE;
 		} else {
 			/* use first character from string */
 			escape_char = (unsigned char) *escape_str;
