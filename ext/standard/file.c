@@ -1796,10 +1796,10 @@ PHP_FUNCTION(fputcsv)
 	char enclosure = '"';					/* allow this to be set as parameter */
 	int escape_char = (unsigned char) '\\';	/* allow this to be set as parameter */
 	php_stream *stream;
-	zval *fp = NULL, *fields = NULL;
+	zval *fp = NULL, *fields = NULL, *eol_str = NULL;
 	ssize_t ret;
-	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL, *eol_str = NULL;
-	size_t delimiter_str_len = 0, enclosure_str_len = 0, escape_str_len = 0, eol_str_len = 0;
+	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL;
+	size_t delimiter_str_len = 0, enclosure_str_len = 0, escape_str_len = 0;
 
 	ZEND_PARSE_PARAMETERS_START(2, 6)
 		Z_PARAM_RESOURCE(fp)
@@ -1808,7 +1808,7 @@ PHP_FUNCTION(fputcsv)
 		Z_PARAM_STRING(delimiter_str, delimiter_str_len)
 		Z_PARAM_STRING(enclosure_str, enclosure_str_len)
 		Z_PARAM_STRING(escape_str, escape_str_len)
-		Z_PARAM_STRING(eol_str, eol_str_len)
+		Z_PARAM_STR(eol_str)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if (delimiter_str != NULL) {
@@ -1847,12 +1847,8 @@ PHP_FUNCTION(fputcsv)
 		}
 	}
 
-	if (eol_str != NULL) {
-		if (eol_str_len < 1) {
-			eol_str = PHP_CSV_EOL;
-		} else {
-			eol_str = escape_str;
-		}
+	if (Z_STRVAL(eol_str) == NULL) {
+		eol_str = zend_string_init(PHP_CSV_EOL, strlen(PHP_CSV_EOL), 0);
 	}
 
 	PHP_STREAM_TO_ZVAL(stream, fp);
@@ -1866,7 +1862,7 @@ PHP_FUNCTION(fputcsv)
 /* }}} */
 
 /* {{{ PHPAPI size_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, char eol_str) */
-PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, char eol_str)
+PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zval eol_str)
 {
 	int count, i = 0;
 	size_t ret;
