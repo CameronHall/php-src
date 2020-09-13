@@ -1795,7 +1795,6 @@ PHP_FUNCTION(fputcsv)
 	char delimiter = ',';					/* allow this to be set as parameter */
 	char enclosure = '"';					/* allow this to be set as parameter */
 	int escape_char = (unsigned char) '\\';	/* allow this to be set as parameter */
-	char eol = '\r\n'; /* allow this to be set as parameter */
 	php_stream *stream;
 	zval *fp = NULL, *fields = NULL;
 	ssize_t ret;
@@ -1841,7 +1840,7 @@ PHP_FUNCTION(fputcsv)
 			php_error_docref(NULL, E_NOTICE, "escape must be empty or a single character");
 		}
 		if (escape_str_len < 1) {
-			escape_char = PHP_CSV_NO_ESCAPE;
+			escape_char = (unsigned char) PHP_CSV_NO_ESCAPE;
 		} else {
 			/* use first character from string */
 			escape_char = (unsigned char) *escape_str;
