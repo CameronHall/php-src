@@ -2371,21 +2371,21 @@ PHP_METHOD(SplFileObject, fgetcsv)
 PHP_METHOD(SplFileObject, fputcsv)
 {
 	spl_filesystem_object *intern = Z_SPLFILESYSTEM_P(ZEND_THIS);
-	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure, *endofline = NULL;
+	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure
 	int escape = intern->u.file.escape;
-	char *delim = NULL, *enclo = NULL, *esc = NULL, *eol = NULL;
-	size_t d_len = 0, e_len = 0, esc_len = 0, eol_len = 0;
+	char *delim = NULL, *enclo = NULL, *esc = NULL;
+	size_t d_len = 0, e_len = 0, esc_len = 0;
 	zend_long ret;
-	zval *fields = NULL;
+	zval *fields = NULL, *eol = NULL;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a|ssss", &fields, &delim, &d_len, &enclo, &e_len, &esc, &esc_len, &eol, &eol_len) == SUCCESS) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a|sssS", &fields, &delim, &d_len, &enclo, &e_len, &esc, &esc_len, &eol) == SUCCESS) {
 
 		// TODO Align behaviour on normal fputcsv()
 		switch(ZEND_NUM_ARGS())
 		{
 		case 5:
-			if (eol_len > 1) {
-				endofline = eol;
+			if (Z_STRVAL(eol) == NULL) {
+				eol = zend_string_init(PHP_CSV_EOL, strlen(PHP_CSV_EOL), 0);
 			}
 			/* no break */
 		case 4:
@@ -2419,7 +2419,7 @@ PHP_METHOD(SplFileObject, fputcsv)
 		case 0:
 			break;
 		}
-		ret = php_fputcsv(intern->u.file.stream, fields, delimiter, enclosure, escape, endofline);
+		ret = php_fputcsv(intern->u.file.stream, fields, delimiter, enclosure, escape, eol);
 		if (ret < 0) {
 			RETURN_FALSE;
 		}
