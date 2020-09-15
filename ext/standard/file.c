@@ -1801,7 +1801,7 @@ PHP_FUNCTION(fputcsv)
 	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL;
 	size_t delimiter_str_len = 0, enclosure_str_len = 0, escape_str_len = 0;
 
-	ZEND_PARSE_PARAMETERS_START(2, 6)
+	ZEND_PARSE_PARAMETERS_START(2, 7)
 		Z_PARAM_RESOURCE(fp)
 		Z_PARAM_ARRAY(fields)
 		Z_PARAM_OPTIONAL
@@ -1861,7 +1861,7 @@ PHP_FUNCTION(fputcsv)
 }
 /* }}} */
 
-/* {{{ PHPAPI size_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, char eol_str) */
+/* {{{ PHPAPI size_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zval eol_str) */
 PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zval eol_str)
 {
 	int count, i = 0;
