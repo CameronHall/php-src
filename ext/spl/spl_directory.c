@@ -2384,7 +2384,7 @@ PHP_METHOD(SplFileObject, fputcsv)
 		switch(ZEND_NUM_ARGS())
 		{
 		case 5:
-			if (Z_STRVAL(eol) == NULL) {
+			if (eol == NULL) {
 				eol = zend_string_init(PHP_CSV_EOL, strlen(PHP_CSV_EOL), 0);
 			}
 			/* no break */
