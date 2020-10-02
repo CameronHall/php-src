@@ -1796,7 +1796,8 @@ PHP_FUNCTION(fputcsv)
 	char enclosure = '"';					/* allow this to be set as parameter */
 	int escape_char = (unsigned char) '\\';	/* allow this to be set as parameter */
 	php_stream *stream;
-	zval *fp = NULL, *fields = NULL, *eol_str = NULL;
+	zval *fp = NULL, *fields = NULL;
+	zend_string = *eol_str = NULL;
 	ssize_t ret;
 	char *delimiter_str = NULL, *enclosure_str = NULL, *escape_str = NULL;
 	size_t delimiter_str_len = 0, enclosure_str_len = 0, escape_str_len = 0;
@@ -1847,7 +1848,7 @@ PHP_FUNCTION(fputcsv)
 		}
 	}
 
-	if (Z_STRVAL(eol_str) == NULL) {
+	if (eol_str == NULL) {
 		eol_str = zend_string_init(PHP_CSV_EOL, strlen(PHP_CSV_EOL), 0);
 	}
 
@@ -1861,8 +1862,8 @@ PHP_FUNCTION(fputcsv)
 }
 /* }}} */
 
-/* {{{ PHPAPI size_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zval eol_str) */
-PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zval eol_str)
+/* {{{ PHPAPI size_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zend_string eol_str) */
+PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, char enclosure, int escape_char, zend_string eol_str)
 {
 	int count, i = 0;
 	size_t ret;
@@ -1911,7 +1912,7 @@ PHPAPI ssize_t php_fputcsv(php_stream *stream, zval *fields, char delimiter, cha
 		zend_tmp_string_release(tmp_field_str);
 	} ZEND_HASH_FOREACH_END();
 
-	smart_str_appends(&csvline, eol_str);
+	smart_str_appends(&csvline, Z_STRVAL(eol_str));
 	smart_str_0(&csvline);
 
 	ret = php_stream_write(stream, ZSTR_VAL(csvline.s), ZSTR_LEN(csvline.s));

@@ -2371,12 +2371,13 @@ PHP_METHOD(SplFileObject, fgetcsv)
 PHP_METHOD(SplFileObject, fputcsv)
 {
 	spl_filesystem_object *intern = Z_SPLFILESYSTEM_P(ZEND_THIS);
-	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure
+	char delimiter = intern->u.file.delimiter, enclosure = intern->u.file.enclosure;
 	int escape = intern->u.file.escape;
 	char *delim = NULL, *enclo = NULL, *esc = NULL;
 	size_t d_len = 0, e_len = 0, esc_len = 0;
 	zend_long ret;
-	zval *fields = NULL, *eol = NULL;
+	zend_string *eol = NULL;
+	zval *fields = NULL;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a|sssS", &fields, &delim, &d_len, &enclo, &e_len, &esc, &esc_len, &eol) == SUCCESS) {
 
