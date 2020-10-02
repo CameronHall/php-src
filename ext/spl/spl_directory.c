@@ -2376,7 +2376,7 @@ PHP_METHOD(SplFileObject, fputcsv)
 	char *delim = NULL, *enclo = NULL, *esc = NULL;
 	size_t d_len = 0, e_len = 0, esc_len = 0;
 	zend_long ret;
-	zend_string *eol = NULL;
+	zend_string eol = NULL;
 	zval *fields = NULL;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a|sssS", &fields, &delim, &d_len, &enclo, &e_len, &esc, &esc_len, &eol) == SUCCESS) {
