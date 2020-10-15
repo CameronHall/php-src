@@ -1855,6 +1855,7 @@ PHP_FUNCTION(fputcsv)
 	PHP_STREAM_TO_ZVAL(stream, fp);
 
 	ret = php_fputcsv(stream, fields, delimiter, enclosure, escape_char, eol_str);
+	zend_string_release(eol_str);
 	if (ret < 0) {
 		RETURN_FALSE;
 	}
